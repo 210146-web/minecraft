@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>Minecraft 首頁驗收測試</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .test { margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+    .pass { background: #d4edda; color: #155724; }
+    .fail { background: #f8d7da; color: #721c24; }
+    .test-result { font-weight: bold; margin-top: 5px; }
+    #preview { border: 2px solid #ccc; margin: 20px 0; display: none; }
+    .tabs { margin: 20px 0; }
+    .tabs button { padding: 10px 20px; margin-right: 5px; cursor: pointer; }
+    .tabs button.active { background: #667eea; color: white; }
+  </style>
+</head>
+<body>
+  <h1>首頁驗收測試</h1>
+  
+  <div class="tabs">
+    <button class="active" onclick="showTab('results')">測試結果</button>
+    <button onclick="showTab('preview')">預覽首頁</button>
+  </div>
+
+  <div id="results"></div>
+  <div id="preview">
+    <iframe id="preview-frame" src="index.html" style="width: 100%; height: 600px; border: 1px solid #ddd;"></iframe>
+  </div>
+  
+  <script>
+    function showTab(tabName) {
+      document.getElementById('results').style.display = tabName === 'results' ? 'block' : 'none';
+      document.getElementById('preview').style.display = tabName === 'preview' ? 'block' : 'none';
+      
+      // 更新按鈕樣式
+      document.querySelectorAll('.tabs button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+
+    const results = [];
+    const resultsDiv = document.getElementById('results');
+    const previewFrame = document.getElementById('preview-frame');
+    
+    // 測試結構與內容
+    function runStructureTests(doc) {
+      const tests = [];
+      
+      tests.push({
+        name: '頁面存在 h1 標題',
+        check: () => doc.querySelector('h1') !== null
+      });
+      
+      tests.push({
+        name: '頁面存在簡介內容 (p 標籤)',
+        check: () => doc.querySelector('p') !== null
+      });
+      
+      tests.push({
+        name: '至少有 3 個 Minecraft 項目 (.minecraft-item)',
+        check: () => {
+          const items = doc.querySelectorAll('.minecraft-item');
+          return items.length >= 3;
+        }
+      });
+      
+      tests.push({
+        name: 'Meta viewport 已設定',
+        check: () => {
+          const viewport = doc.querySelector('meta[name="viewport"]');
+          return viewport !== null;
+        }
+      });
+      
+      return tests;
+    }
+    
+    // 驗收測試邏輯
+    function runTests() {
+      try {
+        const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+        
+        if (!doc) {
+          resultsDiv.innerHTML = '<div class="test fail"><p>無法載入首頁文檔</p></div>';
+          return;
+        }
+        
+        const allTests = runStructureTests(doc);
+        let passed = 0;
+        let failed = 0;
+        
+        resultsDiv.innerHTML = '';
+        
+        allTests.forEach((test, index) => {
+          const result = test.check();
+          const testDiv = document.createElement('div');
+          testDiv.className = 'test ' + (result ? 'pass' : 'fail');
+          
+          if (result) passed++;
+          else failed++;
+          
+          testDiv.innerHTML = `
+            <div><strong>${index + 1}. ${test.name}</strong></div>
+            <div class="test-result">${result ? '✓ 通過' : '✗ 失敗'}</div>
+          `;
+          resultsDiv.appendChild(testDiv);
+        });
+        
+        const summaryDiv = document.createElement('div');
+        summaryDiv.style.marginTop = '20px';
+        summaryDiv.style.padding = '10px';
+        summaryDiv.style.fontWeight = 'bold';
+        summaryDiv.style.fontSize = '16px';
+        summaryDiv.style.backgroundColor = failed === 0 ? '#d4edda' : '#f8d7da';
+        summaryDiv.innerHTML = `<strong>總計：${passed}/${allTests.length} 通過</strong>`;
+        resultsDiv.appendChild(summaryDiv);
+      } catch (e) {
+        resultsDiv.innerHTML = '<div class="test fail"><p>測試執行錯誤：' + e.message + '</p></div>';
+      }
+    }
+    
+    // 載入完成後執行測試
+    previewFrame.addEventListener('load', () => {
+      setTimeout(runTests, 500);
+    });
+    
+    // 頁面載入完成後也執行一次
+    window.addEventListener('load', () => {
+      setTimeout(runTests, 1000);
+    });
+  </script>
+</body>
+</html>

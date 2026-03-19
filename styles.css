@@ -1,0 +1,161 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+/* 頁頭 */
+header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+/* 主要內容 */
+main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+/* 內容卡片 */
+.minecraft-item {
+  background: white;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.minecraft-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.minecraft-item h3 {
+  color: #667eea;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.minecraft-item p {
+  color: #666;
+  line-height: 1.8;
+}
+
+/* 頁尾 */
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 3rem;
+}
+
+footer p {
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* 平板版 (768px 及以下) */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  header p {
+    font-size: 1rem;
+  }
+
+  .content h2 {
+    font-size: 1.5rem;
+  }
+
+  .minecraft-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .minecraft-item h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* 手機版 (480px 及以下) */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  header {
+    padding: 1.5rem 1rem;
+  }
+
+  header h1 {
+    font-size: 1.3rem;
+  }
+
+  header p {
+    font-size: 0.95rem;
+  }
+
+  main {
+    margin: 1rem auto;
+  }
+
+  .content h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .minecraft-item {
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    border-radius: 6px;
+  }
+
+  .minecraft-item h3 {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  footer {
+    padding: 1.5rem 1rem;
+    margin-top: 2rem;
+  }
+
+  footer p {
+    font-size: 0.9rem;
+  }
+}
